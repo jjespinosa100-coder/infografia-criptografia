@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Criptografía en INNOVATECH SOLUTIONS S.A.S.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0F3057;
+    --bg-deep: #0A2440;
+    --panel: #16406B;
+    --panel-2: #1B4A79;
+    --line: rgba(255,255,255,0.14);
+    --line-soft: rgba(255,255,255,0.07);
+    --ink: #EAF2FA;
+    --ink-dim: #B9CBE0;
+    --amber: #F2C744;
+    --teal: #6FC3DF;
+    --coral: #F2846B;
+    --mono: 'IBM Plex Mono', monospace;
+    --display: 'Space Grotesk', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--display);}
+  body{
+    background-image:
+      linear-gradient(var(--line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size: 36px 36px;
+    background-color: var(--bg);
+  }
+  .wrap{max-width:980px;margin:0 auto;padding:0 24px 80px;}
+  a{color:var(--teal);}
+
+  /* HERO */
+  .hero{
+    padding:56px 24px 40px;
+    border-bottom:2px solid var(--line);
+    background: linear-gradient(180deg, var(--bg-deep), var(--bg));
+  }
+  .eyebrow{
+    font-family:var(--mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--amber); display:flex; align-items:center; gap:10px; margin-bottom:18px;
+  }
+  .eyebrow::before{content:"";width:22px;height:1px;background:var(--amber);display:inline-block;}
+  h1{
+    font-size:clamp(28px,4.4vw,46px); line-height:1.08; margin:0 0 16px; font-weight:700;
+    max-width:760px;
+  }
+  h1 span{color:var(--teal);}
+  .hero-sub{color:var(--ink-dim); max-width:620px; font-size:16px; line-height:1.6; margin:0 0 32px;}
+
+  .cipher-demo{
+    background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:22px 24px;
+    max-width:560px; display:flex; flex-direction:column; gap:14px;
+  }
+  .cipher-row{display:flex; align-items:center; gap:16px; flex-wrap:wrap;}
+  .cipher-label{font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-dim); width:90px;}
+  .cipher-text{font-family:var(--mono); font-size:19px; letter-spacing:.03em; color:var(--ink); min-height:26px;}
+  .cipher-text.cipher-out{color:var(--amber);}
+  .toggle-btn{
+    font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase;
+    background:var(--amber); color:#1a1200; border:none; border-radius:6px; padding:9px 16px;
+    cursor:pointer; align-self:flex-start; font-weight:600; transition:transform .15s ease;
+  }
+  .toggle-btn:hover{transform:translateY(-1px);}
+  .toggle-btn:active{transform:translateY(0);}
+  .cipher-caption{font-size:12.5px; color:var(--ink-dim); font-style:italic;}
+
+  /* SECTION SHELL */
+  section.block{padding:52px 0; border-bottom:1px solid var(--line-soft);}
+  .kicker{
+    display:flex; align-items:baseline; gap:14px; margin-bottom:22px;
+  }
+  .kicker .num{
+    font-family:var(--mono); font-size:14px; color:var(--bg-deep); background:var(--teal);
+    width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; font-weight:600;
+  }
+  .kicker h2{font-size:24px; margin:0; font-weight:600;}
+  .body-text{color:var(--ink-dim); line-height:1.7; font-size:15px; max-width:680px;}
+  .body-text strong{color:var(--ink); font-weight:600;}
+  .callout{
+    margin-top:16px; border-left:3px solid var(--amber); padding:10px 16px; background:var(--line-soft);
+    font-size:14px; color:var(--ink); border-radius:0 8px 8px 0; max-width:660px;
+  }
+  .callout b{color:var(--amber);}
+
+  /* ICON */
+  .icon{width:22px;height:22px;stroke:var(--teal);fill:none;stroke-width:1.6;flex-shrink:0;}
+
+  /* CLASIFICACION CARDS */
+  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:20px;}
+  @media(max-width:760px){.grid3{grid-template-columns:1fr;}}
+  .card{
+    background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:20px;
+  }
+  .card .icon{margin-bottom:10px;}
+  .card h3{margin:0 0 8px; font-size:15.5px; color:var(--ink);}
+  .card p{margin:0; font-size:13.5px; color:var(--ink-dim); line-height:1.55;}
+
+  .timeline{display:flex; align-items:center; gap:0; margin-top:26px; max-width:680px;}
+  .tl-node{flex:1; text-align:center; position:relative;}
+  .tl-node .dot{width:12px;height:12px;border-radius:50%;background:var(--amber); margin:0 auto 10px;}
+  .tl-node .line{position:absolute; top:5px; left:50%; width:100%; height:2px; background:var(--line);}
+  .tl-node:last-child .line{display:none;}
+  .tl-node small{display:block; font-family:var(--mono); font-size:11px; color:var(--ink-dim); margin-bottom:4px;}
+  .tl-node span{font-size:13px; color:var(--ink);}
+
+  /* COMPARATIVO */
+  .compare{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:22px;}
+  @media(max-width:700px){.compare{grid-template-columns:1fr;}}
+  .compare-col{background:var(--panel); border:1px solid var(--line); border-radius:10px; overflow:hidden;}
+  .compare-head{padding:16px 18px; font-weight:600; font-size:15px; display:flex; align-items:center; gap:10px;}
+  .compare-head.sym{background:rgba(111,195,223,0.18); color:var(--teal);}
+  .compare-head.asym{background:rgba(242,199,68,0.18); color:var(--amber);}
+  .compare-row{padding:12px 18px; border-top:1px solid var(--line-soft); font-size:13.5px; color:var(--ink-dim);}
+  .compare-row b{color:var(--ink); display:block; font-family:var(--mono); font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; margin-bottom:4px; color:var(--ink-dim);}
+  .compare-row .val{color:var(--ink); font-size:13.5px;}
+
+  .hybrid-note{
+    margin-top:18px; display:flex; gap:12px; align-items:flex-start; background:var(--line-soft);
+    border-radius:10px; padding:16px 18px; max-width:680px;
+  }
+
+  /* CLOCK MOD */
+  .mod-wrap{display:flex; gap:32px; align-items:center; margin-top:22px; flex-wrap:wrap;}
+  .clock{position:relative; width:180px; height:180px; flex-shrink:0;}
+  .clock svg{width:100%; height:100%;}
+  .mod-explain{flex:1; min-width:240px;}
+  .mod-eq{
+    font-family:var(--mono); background:var(--panel); border:1px solid var(--line); border-radius:8px;
+    padding:14px 18px; font-size:15px; color:var(--amber); display:inline-block; margin-bottom:14px;
+  }
+
+  /* ESTANDARES */
+  .badges{display:flex; flex-wrap:wrap; gap:10px; margin-top:20px;}
+  .badge{
+    font-family:var(--mono); font-size:12.5px; border:1px solid var(--line); border-radius:20px;
+    padding:8px 16px; color:var(--ink); background:var(--panel); display:flex; align-items:center; gap:8px;
+  }
+  .badge .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);}
+
+  /* TECNOLOGIAS */
+  .tech-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:20px;}
+  @media(max-width:760px){.tech-grid{grid-template-columns:1fr;}}
+  .tech-card{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:20px;}
+  .tech-card .icon{stroke:var(--coral); margin-bottom:12px;}
+  .tech-card h3{margin:0 0 8px; font-size:15px;}
+  .tech-card p{margin:0; font-size:13px; color:var(--ink-dim); line-height:1.55;}
+
+  /* CONCLUSION / FOOTER */
+  .conclusion{
+    background:var(--bg-deep); border:1px solid var(--line); border-radius:12px; padding:28px 30px; margin-top:6px;
+  }
+  .conclusion p{color:var(--ink-dim); line-height:1.7; font-size:14.5px; margin:0;}
+
+  .link-box{
+    margin-top:26px; border:1px dashed var(--line); border-radius:10px; padding:16px 18px;
+    font-family:var(--mono); font-size:13px; color:var(--ink-dim); display:flex; align-items:center; gap:10px;
+  }
+
+  footer{padding:34px 0 10px; color:var(--ink-dim); font-size:11.5px; line-height:1.7; font-family:var(--mono);}
+  footer .fref{opacity:.8;}
+  footer .company{color:var(--ink); font-weight:600; font-family:var(--display);}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="wrap" style="padding:0;">
+    <div class="eyebrow">Reto 1 · Algoritmos y Modelos Criptográficos</div>
+    <h1>La criptografía como <span>base de la seguridad digital</span> en INNOVATECH SOLUTIONS S.A.S.</h1>
+    <p class="hero-sub">Un mapa visual de los conceptos fundamentales —de la definición de criptografía a su papel en blockchain e IoT— para sustentar cómo proteger la información de clientes públicos y privados.</p>
+
+    <div class="cipher-demo">
+      <div class="cipher-row">
+        <span class="cipher-label">Entrada</span>
+        <span class="cipher-text" id="cipherIn">DATOS SEGUROS</span>
+      </div>
+      <div class="cipher-row">
+        <span class="cipher-label">Salida</span>
+        <span class="cipher-text cipher-out" id="cipherOut">DATOS SEGUROS</span>
+      </div>
+      <button class="toggle-btn" id="cipherBtn">Cifrar mensaje</button>
+      <div class="cipher-caption">Desplazamiento de 3 posiciones (cifrado César) — la lógica más antigua de la criptografía clásica.</div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- 1. DEFINICION -->
+  <section class="block">
+    <div class="kicker">
+      <div class="num">1</div>
+      <h2>¿Qué es la criptografía?</h2>
+    </div>
+    <p class="body-text">La criptografía es la disciplina que diseña y estudia técnicas para transformar la información, de modo que solo pueda interpretarla quien tenga los medios autorizados para hacerlo. No se trata solo de "ocultar" un mensaje: se apoya en fundamentos matemáticos que garantizan propiedades verificables como <strong>confidencialidad, integridad, autenticación</strong> y <strong>no repudio</strong>.</p>
+    <div class="callout">Para INNOVATECH SOLUTIONS S.A.S., esto significa que los datos de sus clientes pueden viajar por la nube o quedar almacenados sin que un tercero no autorizado los lea, los altere o suplante a una de las partes. <b>(Hernández, 2022)</b></div>
+  </section>
+
+  <!-- 2. CLASIFICACION -->
+  <section class="block">
+    <div class="kicker">
+      <div class="num">2</div>
+      <h2>Clasificación de la criptografía</h2>
+    </div>
+    <p class="body-text">Se clasifica principalmente por el tipo de clave que utiliza, y también según el momento histórico de su desarrollo. <span style="font-family:var(--mono);font-size:12px;color:var(--ink-dim)">(Oppliger, 2021; Hernández, 2022)</span></p>
+
+    <div class="grid3">
+      <div class="card">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <h3>Simétrica</h3>
+        <p>Una única clave secreta compartida cifra y descifra la información.</p>
+      </div>
+      <div class="card">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="8" cy="8" r="4"/><path d="M11 11l9 9m-4-4 3-3m-6 0 3 3"/></svg>
+        <h3>Asimétrica</h3>
+        <p>Un par de claves matemáticamente relacionadas: una pública y una privada.</p>
+      </div>
+      <div class="card">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 12h10M7 8h10M7 16h6"/></svg>
+        <h3>Funciones hash</h3>
+        <p>Sin clave: generan una huella digital fija usada para verificar integridad.</p>
+      </div>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-node"><div class="line"></div><div class="dot"></div><small>Clásica</small><span>Cifrado César, escítala</span></div>
+      <div class="tl-node"><div class="dot"></div><small>Moderna</small><span>Teoría de números, curvas elípticas</span></div>
+    </div>
+    <div class="callout">También existen enfoques especializados como la <b>criptografía visual</b> (reparte una imagen en partes que solo revelan el secreto al superponerse) y la <b>criptografía de curvas elípticas</b>, una variante asimétrica con claves más cortas. <span style="opacity:.7">(Wu &amp; Yao, 2023; Cimato &amp; Yang, 2020; Gayoso, 2022)</span></div>
+  </section>
+
+  <!-- 3. COMPARATIVO -->
+  <section class="block">
+    <div class="kicker">
+      <div class="num">3</div>
+      <h2>Simétrica vs. asimétrica</h2>
+    </div>
+    <p class="body-text">Ambas se complementan más de lo que compiten. <span style="opacity:.7">(Singh &amp; Chauhan, 2022; Oppliger, 2021)</span></p>
+
+    <div class="compare">
+      <div class="compare-col">
+        <div class="compare-head sym">🔑 Simétrica</div>
+        <div class="compare-row"><b>Algoritmos</b><span class="val">AES, DES, 3DES, ChaCha20</span></div>
+        <div class="compare-row"><b>Velocidad</b><span class="val">Alta — ideal para grandes volúmenes</span></div>
+        <div class="compare-row"><b>Clave típica</b><span class="val">128–256 bits</span></div>
+        <div class="compare-row"><b>Ventaja</b><span class="val">Rapidez y bajo consumo de recursos</span></div>
+        <div class="compare-row"><b>Riesgo</b><span class="val">Distribuir la clave de forma segura</span></div>
+        <div class="compare-row"><b>Uso típico</b><span class="val">Discos, bases de datos, VPN</span></div>
+      </div>
+      <div class="compare-col">
+        <div class="compare-head asym">🔐 Asimétrica</div>
+        <div class="compare-row"><b>Algoritmos</b><span class="val">RSA, ECC, ElGamal, Diffie-Hellman</span></div>
+        <div class="compare-row"><b>Velocidad</b><span class="val">Más lenta — mayor costo computacional</span></div>
+        <div class="compare-row"><b>Clave típica</b><span class="val">2048–4096 bits (RSA) / 256–521 (ECC)</span></div>
+        <div class="compare-row"><b>Ventaja</b><span class="val">No requiere secreto previo; permite firma digital</span></div>
+        <div class="compare-row"><b>Riesgo</b><span class="val">No es eficiente para grandes volúmenes</span></div>
+        <div class="compare-row"><b>Uso típico</b><span class="val">Firma digital, TLS, correo seguro</span></div>
+      </div>
+    </div>
+
+    <div class="hybrid-note">
+      <svg class="icon" viewBox="0 0 24 24" style="margin-top:2px"><path d="M4 12h16M4 6h16M4 18h16"/></svg>
+      <div class="body-text" style="margin:0"><strong>Modelo híbrido:</strong> protocolos como TLS usan criptografía asimétrica para autenticar y acordar una clave, y luego cifran el tráfico real con un algoritmo simétrico como AES — lo mejor de los dos mundos.</div>
+    </div>
+  </section>
+
+  <!-- 4. CRIPTOANALISIS -->
+  <section class="block">
+    <div class="kicker">
+      <div class="num">4</div>
+      <h2>Criptoanálisis</h2>
+    </div>
+    <p class="body-text">Disciplina que busca obtener información protegida sin la clave legítima, o demostrar fallas matemáticas o de implementación en un algoritmo <span style="opacity:.7">(Oppliger, 2021)</span>. No es solo ofensiva: permite <strong>validar</strong> algoritmos antes de adoptarlos como estándar y detectar cuándo dejan de ser seguros.</p>
+    <div class="badges">
+      <div class="badge"><span class="dot"></span>Fuerza bruta</div>
+      <div class="badge"><span class="dot"></span>Texto plano conocido</div>
+      <div class="badge"><span class="dot"></span>Canal lateral</div>
+      <div class="badge"><span class="dot"></span>Diferencial y lineal</div>
+    </div>
+    <div class="callout">Para INNOVATECH SOLUTIONS S.A.S.: dejar de usar algoritmos vulnerados como DES o MD5, y priorizar estándares con años de escrutinio público.</div>
+  </section>
+
+  <!-- 5. ARITMETICA MODULAR -->
+  <section class="block">
+    <div class="kicker">
+      <div class="num">5</div>
+      <h2>Aritmética modular</h2>
+    </div>
+    <div class="mod-wrap">
+      <div class="clock">
+        <svg viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="92" fill="none" stroke="var(--line)" stroke-width="1.5"/>
+          <g id="clockNums" font-family="IBM Plex Mono" font-size="13" fill="#B9CBE0"></g>
+          <line x1="100" y1="100" x2="100" y2="30" stroke="#F2C744" stroke-width="2.5"/>
+          <line x1="100" y1="100" x2="149" y2="136" stroke="#6FC3DF" stroke-width="2.5"/>
+          <circle cx="100" cy="100" r="4" fill="#EAF2FA"/>
+        </svg>
+      </div>
+      <div class="mod-explain">
+        <div class="mod-eq">15 mod 12 = 3</div>
+        <p class="body-text" style="margin:0">Igual que un reloj: al pasar de las 12, se vuelve a empezar en 1. Dos números son <strong>congruentes módulo n</strong> si al dividirlos entre n dejan el mismo residuo. Es fácil de calcular en un sentido, pero muy costoso de revertir con números grandes — ahí nace la seguridad de <strong>RSA</strong> (factorizar primos enormes) y de <strong>Diffie-Hellman</strong> (acordar un secreto por un canal inseguro). <span style="opacity:.7">(Hernández, 2022)</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. ESTANDARES -->
+  <section class="block">
+    <div class="kicker">
+      <div class="num">6</div>
+      <h2>Estándares vigentes</h2>
+    </div>
+    <p class="body-text">Adoptar estándares validados públicamente —en vez de algoritmos propios o vulnerados— simplifica el cumplimiento normativo y la interoperabilidad con otros proveedores en la nube.</p>
+    <div class="badges">
+      <div class="badge"><span class="dot"></span>AES · datos en reposo y tránsito</div>
+      <div class="badge"><span class="dot"></span>RSA · cifrado y firma digital</div>
+      <div class="badge"><span class="dot"></span>ECC · claves cortas, alto rendimiento</div>
+      <div class="badge"><span class="dot"></span>SHA-2 / SHA-3 · integridad</div>
+      <div class="badge"><span class="dot"></span>TLS 1.3 · comunicaciones HTTPS</div>
+      <div class="badge"><span class="dot"></span>IPsec / VPN · túneles cifrados</div>
+    </div>
+  </section>
+
+  <!-- 7. NUEVAS TECNOLOGIAS -->
+  <section class="block" style="border-bottom:none;">
+    <div class="kicker">
+      <div class="num">7</div>
+      <h2>Soporte de nuevas tecnologías</h2>
+    </div>
+    <div class="tech-grid">
+      <div class="tech-card">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><path d="M10 6.5h4M6.5 10v4M17.5 10v4M10 17.5h4"/></svg>
+        <h3>Blockchain</h3>
+        <p>Cada bloque se enlaza al anterior con funciones hash; cada transacción se firma con criptografía asimétrica. <span style="opacity:.7">(Maldonado, 2024)</span></p>
+      </div>
+      <div class="tech-card">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg>
+        <h3>Internet de las Cosas</h3>
+        <p>Sensores con pocos recursos usan curvas elípticas (ECC): misma seguridad que RSA, claves más pequeñas. <span style="opacity:.7">(Gayoso, 2022)</span></p>
+      </div>
+      <div class="tech-card">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M2 8.5a15 15 0 0 1 20 0M5.5 12a10 10 0 0 1 13 0M9 15.5a5 5 0 0 1 6 0"/><circle cx="12" cy="19" r="1"/></svg>
+        <h3>Comunicaciones seguras</h3>
+        <p>VPN, TLS/SSL y WPA2/WPA3 combinan cifrado simétrico, asimétrico y hash para canales confiables. <span style="opacity:.7">(Zambrano Hernández et al., 2023)</span></p>
+      </div>
+    </div>
+
+    <div class="conclusion" style="margin-top:32px;">
+      <p>La criptografía no es un componente aislado: es la base transversal de la seguridad informática actual. Para INNOVATECH SOLUTIONS S.A.S., combinar correctamente algoritmos simétricos y asimétricos —sostenidos por la aritmética modular y validados por el criptoanálisis— es lo que determina la seguridad, eficiencia y confianza de sus servicios digitales.</p>
+    </div>
+
+  </section>
+</div>
+
+<footer>
+  <div class="wrap" style="padding-top:0;">
+    <div class="company">INNOVATECH SOLUTIONS S.A.S.</div>
+    Curso Algoritmos y Modelos Criptográficos · Reto 1 — UNAD<br><br>
+    <div class="fref">
+      Referencias: Cimato &amp; Yang (2020) · Gayoso (2022) · Hernández (2022) · Maldonado (2024) · Oppliger (2021) · Singh &amp; Chauhan (2022) · Wu &amp; Yao (2023) · Zambrano Hernández et al. (2023)
+    </div>
+    <br>
+    <div style="color:var(--ink-dim)">Elaborado por: <span style="color:var(--ink)">Jose Jhon Fredy Espinosa Cuevas</span></div>
+  </div>
+</footer>
+
+<script>
+  // Cipher demo (Caesar +3)
+  const shift = 3;
+  const original = "DATOS SEGUROS";
+  const outEl = document.getElementById('cipherOut');
+  const inEl = document.getElementById('cipherIn');
+  const btn = document.getElementById('cipherBtn');
+  let ciphered = false;
+
+  function caesar(str, s){
+    return str.split('').map(ch=>{
+      if(ch === ' ') return ' ';
+      const code = ch.charCodeAt(0) - 65;
+      return String.fromCharCode(((code + s + 26) % 26) + 65);
+    }).join('');
+  }
+
+  btn.addEventListener('click', () => {
+    ciphered = !ciphered;
+    if(ciphered){
+      outEl.textContent = caesar(original, shift);
+      btn.textContent = "Descifrar mensaje";
+    } else {
+      outEl.textContent = original;
+      btn.textContent = "Cifrar mensaje";
+    }
+  });
+
+  // Clock numbers 1-12
+  const g = document.getElementById('clockNums');
+  for(let i=1;i<=12;i++){
+    const angle = (i/12) * 2*Math.PI - Math.PI/2;
+    const x = 100 + 74*Math.cos(angle);
+    const y = 100 + 74*Math.sin(angle);
+    const t = document.createElementNS("http://www.w3.org/2000/svg","text");
+    t.setAttribute("x", x);
+    t.setAttribute("y", y+4);
+    t.setAttribute("text-anchor","middle");
+    t.textContent = i;
+    g.appendChild(t);
+  }
+</script>
+
+</body>
+</html>
